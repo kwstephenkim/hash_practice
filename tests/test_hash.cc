@@ -51,20 +51,49 @@ TEST(HashTable, Find) {
     EXPECT_FALSE(table.Find(12));
 }
 
+#define InsertConflictTest() \
+HashTable table(10);                            \
+EXPECT_EQ(table.Size(), 0);                     \
+table.Insert(5, "Apple");                       \
+EXPECT_EQ(table.Size(), 1);                     \
+table.Insert(45, "Orange");                     \
+EXPECT_EQ(table.Size(), 2);                     \
+table.Insert(35, "Pineapple");                  \
+EXPECT_EQ(table.Size(), 3);                     \
+table.Insert(35, "Dragon Fruit");               \
+EXPECT_EQ(table.Size(), 3);                     \
+table.Insert(22, "Cantalope");                  \
+EXPECT_EQ(table.Size(), 4);                     \
+table.Insert(25, "Cantalope");                  \
+EXPECT_EQ(table.Size(), 5);                     \
+table.Insert(75, "Cantalope");                  \
+EXPECT_EQ(table.Size(), 6);                     \
+
+
 TEST(HashTable, InsertConflict) {
   {
-    HashTable table(10);
-    EXPECT_EQ(table.Size(), 0);
-    table.Insert(5, "Apple");
-    EXPECT_EQ(table.Size(), 1);
-    table.Insert(45, "Orange");
-    EXPECT_EQ(table.Size(), 2);
-    table.Insert(35, "Pineapple");
-    EXPECT_EQ(table.Size(), 3);
-    table.Insert(35, "Dragon Fruit");
-    EXPECT_EQ(table.Size(), 3);
-    table.Insert(22, "Cantalope");
-    EXPECT_EQ(table.Size(), 4);
+    InsertConflictTest();
   }
   EXPECT_TRUE(true);
+}
+
+TEST(HashTable, Remove) {
+  InsertConflictTest();
+  EXPECT_TRUE(table.Find(5));
+  table.Remove(5);
+  EXPECT_FALSE(table.Find(5));
+
+  EXPECT_FALSE(table.Find(85));
+  EXPECT_FALSE(table.Remove(85));
+  EXPECT_FALSE(table.Find(85));
+
+  EXPECT_TRUE(table.Find(35));
+  table.Remove(35);
+  EXPECT_FALSE(table.Find(35));
+
+  EXPECT_TRUE(table.Find(75));
+  table.Remove(75);
+  EXPECT_FALSE(table.Find(75));
+
+  EXPECT_EQ(table.Size(), 3);
 }

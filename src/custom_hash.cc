@@ -47,3 +47,25 @@ void HashTable::DeepDisconnect(NodePtr node) {
   node->next_ = nullptr;
   return;
 }
+
+bool HashTable::Remove(const int k) {
+  auto node = Find(k);
+  if (!node) return false;
+  auto& bucket = buckets_[HashCode(k)];
+  bucket = RemoveImpl(bucket, node);
+  size_--;
+  return true;
+}
+
+HashTable::NodePtr HashTable::RemoveImpl(NodePtr head, NodePtr node) {
+  if (!node) return head;
+
+  if (head == node) {
+    auto new_head = head->next_;
+    head->next_ = nullptr;
+    return new_head;
+  }
+  auto new_list = RemoveImpl(head->next_, node);
+  head->next_ = new_list;
+  return head;
+}
