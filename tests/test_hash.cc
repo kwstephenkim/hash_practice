@@ -47,7 +47,8 @@ TEST(HashTable, Find) {
       EXPECT_EQ(n->key_, 35);
       EXPECT_EQ(n->value_, "Pineapple");
     }
-
+    EXPECT_FALSE(table.Find(55));
+    EXPECT_FALSE(table.Find(12));
 }
 
 TEST(HashTable, InsertConflict) {

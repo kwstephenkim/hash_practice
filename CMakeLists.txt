@@ -17,7 +17,8 @@ enable_testing()
 
 include_directories(src)
 
-add_compile_options("-Wall" "-g3" "-ggdb" "-O0")
+add_compile_options("-Wall" "-g3" "-ggdb" "-O0" "-fsanitize=address")
+add_link_options("-fsanitize=address")
 
 add_library(
   custom_hash SHARED

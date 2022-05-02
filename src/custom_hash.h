@@ -26,14 +26,15 @@ public:
   const auto Size() const {
     return size_;
   }
-  ~HashTable() {
-    // for each bucket, recursively disconnect nodes
-  }
+  ~HashTable();
+
 private:
   int size_;
   int bucket_size_;
-  NodePtr FindImpl(NodePtr node, const int k);
   std::shared_ptr<NodePtr[]> buckets_;
+
+  NodePtr FindImpl(NodePtr node, const int k);
+  void DeepDisconnect(NodePtr node);
 };
 
 
